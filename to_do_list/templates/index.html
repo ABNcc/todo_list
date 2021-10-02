@@ -6,16 +6,6 @@
 {% extends 'navbar.html' %}
 <body>
 {% block content %}
-<style>
-    @media (max-width: 600px){
-        img{
-            margin-top: 100px;
-            width: 300px;
-        }
-    }
-</style>
-
-
 <form method="POST" action="{% url 'add' %}">{% csrf_token %}
     {{ task_input }}
     {{ description_input }}
