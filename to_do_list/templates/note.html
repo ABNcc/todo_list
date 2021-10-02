@@ -13,6 +13,11 @@
 
 {% if note %}
 {% for n in note %}
+{% if n|striptags == "" %}
+<script>
+    alert("Remove the '<>' tags to show the note");
+</script>
+{% endif %}
 <div class="card ">
     <div class="card-body">
         {{ n.note|striptags|capfirst }}<br>

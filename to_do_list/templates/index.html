@@ -12,10 +12,15 @@
     {{ description_input }}
     <button type="submit" class="btn btn-primary" id="save" hidden>Save</button>
 </form>
-
-
 {% if tasks %}
 {% for task in tasks %}
+
+{% if task|striptags == "" %}
+<script>
+    alert("Remove the '<>' tags to show the task");
+</script>
+{% endif %}
+
 {% if task.completed == False %}
 <div class="card" style="width: 18rem;">
     <br>
@@ -46,7 +51,6 @@
         </div>
     </div>
 </div>
-
 {% else %}
 <div class="cardsecondary" style="width: 18rem;">
     <br>

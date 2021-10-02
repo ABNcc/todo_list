@@ -1,9 +1,13 @@
+from django.core.checks import messages
 from django.shortcuts import redirect, render
+from django.utils import safestring
 from django.views.decorators.csrf import csrf_exempt
 from .models import ToDoList, Note
 from .forms import TaskForm, Noteform
 from django.views.decorators.http import require_POST
 from datetime import datetime
+from django.utils.html import strip_tags
+from django.utils.safestring import SafeString, mark_safe
 
 
 def task_view(request):
@@ -26,14 +30,19 @@ def add_task(request):
         #new_task = ToDoList.objects.create(task=task, description=description) # can be used with (1 and 2) but the one below takes one line instead of 3 lines
         new_task = ToDoList(task=request.POST['task'], description=request.POST['description'])
         new_task.save()
+    else:
+        return redirect('/error/not_valid_data/')
     return redirect('Task')
 
 
 @csrf_exempt
-@require_POST # Here I used the common thing(405 error) but in the -completed_task_view- I used my way
+#@require_POST # Here I used the common thing(405 error) but in the -completed_task_view- I used my way
 def delete_task(request):
-    task_id = request.POST['task_id']
-    ToDoList.objects.get(pk=task_id).delete()
+    if request.method == 'POST':
+        task_id = request.POST['task_id']
+        ToDoList.objects.get(pk=task_id).delete()
+    else:
+        return redirect('/error/did_you_just...?')
     return redirect('Task')
 
 
@@ -46,7 +55,7 @@ def completed_task_view(request):
         complete.completed = True
         complete.save()
     else:
-        return redirect('/are_you_kidding_me/')
+        return redirect('/error/are_you_kidding_me/')
     return redirect('Task')
 
 
