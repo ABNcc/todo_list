@@ -1,0 +1,37 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@350&display=swap" rel="stylesheet">
+<link rel="shortcut icon" type="image/x-icon" href="https://cdn3.iconfinder.com/data/icons/basic-flat-svg/512/svg15-512.png">
+<style>
+    .error{
+    color:rgb(12, 12, 128);
+    font-size: 7rem;
+    font-family: 'Heebo', sans-serif;
+    margin: 0;
+    position: absolute;
+    top: 37%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)}
+
+    .text{
+        font-size: 2rem;
+        font-family: 'Heebo', sans-serif;
+        position: absolute;
+        top: 43%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%)}
+
+    a{
+        color: black;
+        
+    }
+</style>
+
+<h1 class="error">404</h1>
+<p class="text">Nice try but... <a href="{% url 'Task' %}">GO BACK</a></p>
+<script>
+    alert("Sometimes you end up here beacause of an error. So, if you are here by an error see the url section to know the error type")
+</script>

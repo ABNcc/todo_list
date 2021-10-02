@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Notes</title>
+</head>
+{% extends 'navbar.html' %}
+<body>
+{% block content %}
+<form method="POST" action="{% url 'add note' %}"> {% csrf_token %}
+    {{ form.note }}<br>
+    <button type="submit" class="btn btn-primary" id="save" hidden>Save</button>
+</form>
+
+{% if note %}
+{% for n in note %}
+{% if n|striptags == "" %}
+<script>
+    alert("Remove the '<>' tags to show the note");
+</script>
+{% endif %}
+<div class="card ">
+    <div class="card-body">
+        {{ n.note|striptags|capfirst }}<br>
+        <p style="color: rgb(136, 134, 134);">{{ n.publish_date }}</p>
+        <form method="POST" action="{% url 'delete note' %}">
+            <div class="d-grid gap-1 justify-content-md-end">
+                <button type="submit" class="btn btn-danger btn-sm" name="note_id" value="{{ n.id }}">Delete</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<img class="position-absolute top-50 start-50 translate-middle" 
+    src="https://ihome.agency/en/images/empty-list.png" alt="You really don't have notes?">
+{% endif %}
+{% endblock %}
+</body>
+</html>
