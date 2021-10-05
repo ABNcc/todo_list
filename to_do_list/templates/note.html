@@ -7,8 +7,8 @@
 <body>
 {% block content %}
 <form method="POST" action="{% url 'add note' %}"> {% csrf_token %}
-    {{ form.note }}<br>
-    <button type="submit" class="btn btn-primary" id="save" hidden>Save</button>
+    {{ form.note }}
+    <button type="submit" class="btn btn-primary" id="save">Save</button>
 </form>
 
 {% for n in note %}
@@ -30,7 +30,7 @@
 </div>
 {% empty %}
 <img class="position-absolute top-50 start-50 translate-middle"
-     src="https://ihome.agency/en/images/empty-list.png" alt="You really don't have notes?" style="width: 600px;">
+     src="https://ihome.agency/en/images/empty-list.png" alt="You really don't have notes?"">
 {% endfor %}
 {% endblock %}
 </body>

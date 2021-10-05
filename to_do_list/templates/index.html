@@ -6,15 +6,6 @@
 {% extends 'navbar.html' %}>
 <body>
 {% block content %}
-<style>
-    
-@media (min-width: 1000px){
-  #save{
-    display: none;
-  }
-  }
-</style>
-
 <form method="POST" action="{% url 'add' %}">{% csrf_token %}
     {{ task_input }}
     {{ description_input }}
