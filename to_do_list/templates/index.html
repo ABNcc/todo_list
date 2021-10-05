@@ -11,7 +11,6 @@
     {{ description_input }}
     <button type="submit" class="btn btn-primary" id="save" hidden>Save</button>
 </form>
-{% if tasks %}
 {% for task in tasks %}
 
 {% if task|striptags == "" %}
@@ -73,11 +72,10 @@
     </div>
 </div>
 {% endif %}
-{% endfor %}
-{% else %}
+{% empty %}
 <img src="https://ihome.agency/en/images/empty-list.png" alt="Looks like you have nothing To Do!" 
        class="img-fluid position-absolute top-50 start-50 translate-middle" id="img">
-{% endif %}
+{% endfor %}
 {% endblock %}
 </body>
 </html>

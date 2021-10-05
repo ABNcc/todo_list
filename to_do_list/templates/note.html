@@ -11,7 +11,6 @@
     <button type="submit" class="btn btn-primary" id="save" hidden>Save</button>
 </form>
 
-{% if note %}
 {% for n in note %}
 {% if n|striptags == "" %}
 <script>
@@ -29,11 +28,10 @@
         </form>
     </div>
 </div>
-{% endfor %}
-{% else %}
+{% empty %}
 <img class="position-absolute top-50 start-50 translate-middle"
      src="https://ihome.agency/en/images/empty-list.png" alt="You really don't have notes?" style="width: 600px;">
-{% endif %}
+{% endfor %}
 {% endblock %}
 </body>
 </html>

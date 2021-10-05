@@ -23,12 +23,13 @@ def task_view(request):
 @csrf_exempt
 @require_POST
 def add_task(request):
-    #task = request.POST['task']   1
-    #description = request.POST['description']   2
+    # task = request.POST['task']   1
+    # description = request.POST['description']   2
     form = TaskForm(request.POST)
     if form.is_valid():
-        #new_task = ToDoList.objects.create(task=task, description=description) # can be used with (1 and 2) but the one below takes one line instead of 3 lines
-        new_task = ToDoList(task=request.POST['task'], description=request.POST['description'])
+        # new_task = ToDoList.objects.create(task=task, description=description) # can be used with (1 and 2) but the one below takes one line instead of 3 lines
+        new_task = ToDoList(
+            task=request.POST['task'], description=request.POST['description'])
         new_task.save()
     else:
         return redirect('/error/not_valid_data/')
@@ -36,7 +37,7 @@ def add_task(request):
 
 
 @csrf_exempt
-#@require_POST # Here I used the common thing(405 error) but in the -completed_task_view- I used my way
+# @require_POST # Here I used the common thing(405 error) but in the -completed_task_view- I used my way
 def delete_task(request):
     if request.method == 'POST':
         task_id = request.POST['task_id']
@@ -47,7 +48,7 @@ def delete_task(request):
 
 
 @csrf_exempt
-#@require_POST #(I used the -are you kidding me- url instead beacause it dosen't show the task id and it's more funny😃😃)
+# @require_POST #(I used the -are you kidding me- url instead beacause it dosen't show the task id and it's more funny😃😃)
 def completed_task_view(request):
     if request.method == 'POST':
         done_id = request.POST['done_id']
