@@ -38,9 +38,8 @@ def add_task(request):
 
 @csrf_exempt
 # @require_POST # Here I used the common thing(405 error) but in the -completed_task_view- I used my way
-def delete_task(request):
+def delete_task(request, task_id):
     if request.method == 'POST':
-        task_id = request.POST['task_id']
         ToDoList.objects.get(pk=task_id).delete()
     else:
         return redirect('/error/did_you_just...?')
@@ -49,10 +48,9 @@ def delete_task(request):
 
 @csrf_exempt
 # @require_POST #(I used the -are you kidding me- url instead beacause it dosen't show the task id and it's more funny😃😃)
-def completed_task_view(request):
+def completed_task_view(request, task_id):
     if request.method == 'POST':
-        done_id = request.POST['done_id']
-        complete = ToDoList.objects.get(pk=done_id)
+        complete = ToDoList.objects.get(pk=task_id)
         complete.completed = True
         complete.save()
     else:
@@ -80,7 +78,6 @@ def add_note(request):
 
 @csrf_exempt
 @require_POST
-def delete_note(request):
-    note_id = request.POST['note_id']
+def delete_note(request, note_id):
     Note.objects.get(pk=note_id).delete()
     return redirect('note')

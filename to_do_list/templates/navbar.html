@@ -23,7 +23,7 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'note' %}">Note</a>
+            <a class="navbar-brand" aria-current="page" href="{% url 'note' %}">Note</a>
           </li>
         </ul>
     </div>
@@ -31,14 +31,13 @@
 </nav>
 <style>
   @media (max-height: 650px){
-      #img{
+      #no_data_img{
           margin-top: 100px;
           width: 300px;
       }
   @media (max-height: 354px){
-    #img{
-      width: 0px;
-      height:0px;
+    #no_data_img{
+      display: none;
     }
   }
 }
