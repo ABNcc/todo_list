@@ -3,13 +3,22 @@
 <head>
     <title>To Do List</title>
 </head>
-{% extends 'navbar.html' %}
+{% extends 'navbar.html' %}>
 <body>
 {% block content %}
+<style>
+    
+@media (min-width: 1000px){
+  #save{
+    display: none;
+  }
+  }
+</style>
+
 <form method="POST" action="{% url 'add' %}">{% csrf_token %}
     {{ task_input }}
     {{ description_input }}
-    <button type="submit" class="btn btn-primary" id="save" hidden>Save</button>
+    <button type="submit" class="btn btn-primary" id="save">Save</button>
 </form>
 {% for task in tasks %}
 
