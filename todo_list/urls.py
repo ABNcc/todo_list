@@ -19,13 +19,13 @@ from django.urls import path
 from to_do_list.views import delete_note, note_view, task_view, add_task, delete_task, completed_task_view, note_view, add_note, delete_note
 
 urlpatterns = [
-    path('', task_view, name='Task'), 
-    path('add/', add_task, name='add'), 
-    path('completed/', completed_task_view, name='completed'), 
-    path('delete/', delete_task, name='delete'), 
-    path('note/', note_view, name='note'), 
-    path('add_note/', add_note, name='add note'), 
-    path('delete_note/', delete_note, name='delete note'), 
+    path('', task_view, name='Task'),
+    path('add/', add_task, name='add'),
+    path('completed/<int:task_id>', completed_task_view, name='completed'),
+    path('delete/<int:task_id>', delete_task, name='delete'),
+    path('note/', note_view, name='note'),
+    path('add_note/', add_note, name='add note'),
+    path('delete_note/<int:note_id>', delete_note, name='delete note'),
     path('admin/', admin.site.urls),
 ]
 
