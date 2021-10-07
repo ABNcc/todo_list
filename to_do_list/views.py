@@ -1,13 +1,9 @@
-from django.core.checks import messages
 from django.shortcuts import redirect, render
-from django.utils import safestring
 from django.views.decorators.csrf import csrf_exempt
 from .models import ToDoList, Note
 from .forms import TaskForm, Noteform
 from django.views.decorators.http import require_POST
 from datetime import datetime
-from django.utils.html import strip_tags
-from django.utils.safestring import SafeString, mark_safe
 
 
 def task_view(request):
@@ -40,7 +36,10 @@ def add_task(request):
 # @require_POST # Here I used the common thing(405 error) but in the -completed_task_view- I used my way
 def delete_task(request, task_id):
     if request.method == 'POST':
-        ToDoList.objects.get(pk=task_id).delete()
+        if ToDoList.objects.filter(pk=task_id):
+            ToDoList.objects.get(pk=task_id).delete()
+        else:
+            return redirect('Task')
     else:
         return redirect('/error/did_you_just...?')
     return redirect('Task')
@@ -64,20 +63,27 @@ def error_404(request, exception):
 
 def note_view(request):
     note = Note.objects.all()
-    form = Noteform(request.POST)
+    form = Noteform()
     return render(request, 'note.html', {'note': note, 'form': form})
 
 
 @csrf_exempt
 @require_POST
 def add_note(request):
-    new_note = Note(note=request.POST['note'], publish_date=datetime.now())
-    new_note.save()
+    form = Noteform(request.POST)
+    if form.is_valid():
+        new_note = Note(note=request.POST['note'], publish_date=datetime.now())
+        new_note.save()
+    else:
+        return redirect('note')
     return redirect('note')
 
 
 @csrf_exempt
 @require_POST
 def delete_note(request, note_id):
-    Note.objects.get(pk=note_id).delete()
+    if Note.objects.filter(pk=note_id):
+        Note.objects.get(pk=note_id).delete()
+    else:
+        return redirect('note')
     return redirect('note')

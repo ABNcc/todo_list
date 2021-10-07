@@ -1,6 +1,4 @@
 from django import forms
-from django.core.exceptions import ValidationError
-from django.db.models.fields import TextField
 
 
 class TaskForm(forms.Form):
@@ -15,4 +13,4 @@ class TaskForm(forms.Form):
 
 class Noteform(forms.Form):
     note = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-lg", 'type': "text", 'placeholder': "Note",
-               'aria-label': "note input"}))
+                                                         'aria-label': "note input"}))
