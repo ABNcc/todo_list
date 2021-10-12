@@ -1,3 +1,4 @@
+# Imports
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 from .models import ToDoList, Note
@@ -9,6 +10,7 @@ from datetime import datetime
 def task_view(request):
     tasks = ToDoList.objects.all()
     form = TaskForm()
+    # Inputs
     task_input = request.POST.get('task', form['task'])
     description_input = request.POST.get('description', form['description'])
 
@@ -19,11 +21,9 @@ def task_view(request):
 @csrf_exempt
 @require_POST
 def add_task(request):
-    # task = request.POST['task']   1
-    # description = request.POST['description']   2
     form = TaskForm(request.POST)
+    # Check if the data for Task entered is valid or not.
     if form.is_valid():
-        # new_task = ToDoList.objects.create(task=task, description=description) # can be used with (1 and 2) but the one below takes one line instead of 3 lines
         new_task = ToDoList(
             task=request.POST['task'], description=request.POST['description'])
         new_task.save()
@@ -33,27 +33,22 @@ def add_task(request):
 
 
 @csrf_exempt
-# @require_POST # Here I used the common thing(405 error) but in the -completed_task_view- I used my way
+@require_POST
 def delete_task(request, task_id):
-    if request.method == 'POST':
-        if ToDoList.objects.filter(pk=task_id):
-            ToDoList.objects.get(pk=task_id).delete()
-        else:
-            return redirect('Task')
+    # Check if the Task wanted to be deleted exists or not so it doesn't show an error
+    if ToDoList.objects.filter(pk=task_id).exists():
+        ToDoList.objects.get(pk=task_id).delete()
     else:
-        return redirect('/error/did_you_just...?')
+        return redirect('Task')
     return redirect('Task')
 
 
 @csrf_exempt
-# @require_POST #(I used the -are you kidding me- url instead beacause it dosen't show the task id and it's more funny😃😃)
+@require_POST
 def completed_task_view(request, task_id):
-    if request.method == 'POST':
-        complete = ToDoList.objects.get(pk=task_id)
-        complete.completed = True
-        complete.save()
-    else:
-        return redirect('/error/are_you_kidding_me/')
+    complete = ToDoList.objects.get(pk=task_id)
+    complete.completed = True
+    complete.save()
     return redirect('Task')
 
 
@@ -71,6 +66,7 @@ def note_view(request):
 @require_POST
 def add_note(request):
     form = Noteform(request.POST)
+    # Checks if the entered data for Note valid or not.
     if form.is_valid():
         new_note = Note(note=request.POST['note'], publish_date=datetime.now())
         new_note.save()
@@ -82,7 +78,8 @@ def add_note(request):
 @csrf_exempt
 @require_POST
 def delete_note(request, note_id):
-    if Note.objects.filter(pk=note_id):
+    # Check if the Note wanted to be deleted exists or not so it doesn't show an error
+    if Note.objects.filter(pk=note_id).exists():
         Note.objects.get(pk=note_id).delete()
     else:
         return redirect('note')

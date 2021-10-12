@@ -2,24 +2,25 @@
 <html>
 <head>
     <title>To Do List</title>
-</head>
 {% extends 'navbar.html' %}>
-<body>
 {% block content %}
+<!-- Task inputs -->
 <form method="POST" action="{% url 'add' %}">{% csrf_token %}
     {{ task_input }}
     {{ description_input }}
     <button type="submit" class="btn btn-primary" id="save">Save</button>
 </form>
 {% for task in tasks %}
-
+<!-- Empty task alert -->
 {% if task|striptags == "" %}
 <script>
     alert("Remove the '<>' tags to show the task");
 </script>
 {% endif %}
 
+<!-- tasks view -->
 {% if task.completed == False %}
+<!-- Not completed tasks -->
 <div class="card" style="width: 18rem;">
     <br>
     <div class="card-body">
@@ -50,6 +51,7 @@
     </div>
 </div>
 {% else %}
+<!-- Completed tasks -->
 <div class="cardsecondary" style="width: 18rem;">
     <br>
     <div class="card-body" style="color: grey;">
@@ -73,9 +75,10 @@
 </div>
 {% endif %}
 {% empty %}
+<!-- No tasks -->
 <img src="https://ihome.agency/en/images/empty-list.png" alt="Looks like you have nothing To Do!" 
        class="img-fluid position-absolute top-50 start-50 translate-middle" id="no_data_img">
 {% endfor %}
-{% endblock %}
 </body>
 </html>
+{% endblock %}

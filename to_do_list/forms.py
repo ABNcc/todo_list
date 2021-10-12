@@ -4,7 +4,7 @@ from django import forms
 class TaskForm(forms.Form):
     task = forms.CharField(max_length=50, widget=forms.TextInput(
         attrs={'class': "form-control form-control-lg", 'type': "text", 'placeholder': "Task",
-               'aria-label': "task input"}))
+               'aria-label': "task input", 'autofocus': ""}))
 
     description = forms.CharField(max_length=100, widget=forms.TextInput(
         attrs={'class': "form-control", 'type': "text", 'placeholder': "Description",
@@ -13,4 +13,4 @@ class TaskForm(forms.Form):
 
 class Noteform(forms.Form):
     note = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-lg", 'type': "text", 'placeholder': "Note",
-                                                         'aria-label': "note input"}))
+                                                         'aria-label': "note input", 'autofocus': ""}))
