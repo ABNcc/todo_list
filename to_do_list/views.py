@@ -1,14 +1,18 @@
 # Imports
+from typing import Reversible
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 from .models import ToDoList, Note
-from .forms import TaskForm, Noteform
+from .forms import TaskForm, Noteform, RegisterForm
 from django.views.decorators.http import require_POST
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 
 
+@csrf_exempt
 @login_required
 def task_view(request):
     tasks = ToDoList.objects.filter(user=request.user).all()
@@ -65,6 +69,7 @@ def error_404(request, exception):
 
 
 @login_required
+@csrf_exempt
 def note_view(request):
     note = Note.objects.filter(user=request.user).all()
     form = Noteform()
@@ -99,8 +104,23 @@ def delete_note(request, note_id):
     return redirect('note')
 
 
+@csrf_exempt
 def register(request):
-    form = UserCreationForm()
-    if UserCreationForm(request.POST).is_valid():
-        UserCreationForm(request.POST).save()
+    form = RegisterForm(request.POST)
+    email_exists = "Email is already used"
+    if request.method == "POST":
+        if form.is_valid():
+            if User.objects.filter(email=request.POST['email']).exists():
+                return render(request, "registration/register.html", {'email_exists': email_exists, 'form': form, 'error': form.errors})
+            else:
+                form.save()
+                user = authenticate(
+                    username=request.POST['username'], password=request.POST['password1'])
+                login(request, user)
+                return redirect("Task")
+
+        elif User.objects.filter(email=request.POST['email']).exists():
+            return render(request, "registration/register.html", {'error': form.errors, 'email_exists': email_exists, 'form': form})
+        else:
+            return render(request, "registration/register.html", {'error': RegisterForm(request.POST).errors, 'form': form})
     return render(request, "registration/register.html", {'form': form})

@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 
 class TaskForm(forms.Form):
@@ -14,3 +16,11 @@ class TaskForm(forms.Form):
 class Noteform(forms.Form):
     note = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-lg", 'type': "text", 'placeholder': "Note",
                                                          'aria-label': "note input", 'autofocus': ""}))
+
+
+class RegisterForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = User
+        fields = ["username", "email", "password1", "password2"]
