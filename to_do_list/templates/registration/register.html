@@ -7,19 +7,20 @@
 <!--===============================================================================================-->	
 	<link rel="shortcut icon" type="image/x-icon" href="https://abncc.github.io/todolist_style/logo.png">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="https://abncc.github.io/todolist_style/Login_v1/vendor/bootstrap/css/bootstrap.min.css">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="https://abncc.github.io/todolist_style/Login_v1/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="https://abncc.github.io/todolist_style/Login/vendor/bootstrap/css/bootstrap.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="https://abncc.github.io/todolist_style/Login_v1/vendor/animate/animate.css">
+	<link rel="stylesheet" type="text/css" href="https://abncc.github.io/todolist_style/Login/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="https://abncc.github.io/todolist_style/Login/vendor/animate/animate.css">
 <!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="https://abncc.github.io/todolist_style/Login_v1/vendor/css-hamburgers/hamburgers.min.css">
+	<link rel="stylesheet" type="text/css" href="https://abncc.github.io/todolist_style/Login/vendor/css-hamburgers/hamburgers.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="https://abncc.github.io/todolist_style/Login_v1/vendor/select2/select2.min.css">
+	<link rel="stylesheet" type="text/css" href="https://abncc.github.io/todolist_style/Login/vendor/select2/select2.min.css">
 <!--===============================================================================================-->
-<link rel="stylesheet" type="text/css" href="https://abncc.github.io/todolist_style/Login_v1/css/util.css">
-<link rel="stylesheet" type="text/css" href="https://abncc.github.io/todolist_style/Login_v1/css/main.css">
+<link rel="stylesheet" type="text/css" href="https://abncc.github.io/todolist_style/Login/css/util.css">
+<link rel="stylesheet" type="text/css" href="https://abncc.github.io/todolist_style/Login/css/main.css">
 <!--===============================================================================================-->
 </head>
 <body>
@@ -27,12 +28,12 @@
 		<div class="container-login100">
 			<div class="wrap-login100">
 				<div class="login100-pic js-tilt" data-tilt>
-					<img src="https://abncc.github.io/todolist_style/logo.png" alt="IMG">
+					<img src="https://abncc.github.io/todolist_style/logo.png" alt="To Do List" translate="no">
 				</div>
 
 				<form class="login100-form validate-form" action="{% url 'register' %}" method="POST"> {% csrf_token %}
 					<span class="login100-form-title">
-						To Do List Register
+						Register
 					</span>
 					<div class="wrap-input100 validate-input" data-validate = "Valid username is required like: Ali">
 						{{ form.username }}
@@ -69,17 +70,18 @@
 						</span>
 					</div>
 					<div style="color: #ff0033; font-family: sans-serif;">{{ error.password2 }}</div>
-					<script>
-						document.querySelector('#id_username').outerHTML = "<input class='input100' type='text' name='username' placeholder='Username' maxlength='150' name='username' id='id_username' autocomplete='username' autocapitalize='none'>"
-						document.querySelector('#id_email').outerHTML = "<input class='input100' type='email' name='email' placeholder='Email' name='email' id='id_email'>"
-						document.querySelector('#id_password1').outerHTML = "<input class='input100' type='password' name='password1' placeholder='Password' autocomplete='new-password' id='id_password1'>"
-						document.querySelector('#id_password2').outerHTML = "<input class='input100' type='password' name='password2' placeholder='Confirm Password' autocomplete='new-password' id='id_password2'>"
-				</script>
+
 						<div class="container-login100-form-btn">
 						<button class="login100-form-btn" type="submit">
 								Register
 							</button>
 						</div>
+						<script>
+							document.querySelector('#id_username').outerHTML = "<input class='input100' type='text' name='username' placeholder='Username' maxlength='150' name='username' id='id_username'>"
+							document.querySelector('#id_email').outerHTML = "<input class='input100' type='email' name='email' placeholder='Email' name='email' id='id_email'>"
+							document.querySelector('#id_password1').outerHTML = "<input class='input100' type='password' name='password1' placeholder='Password' autocomplete='new-password' id='id_password1'>"
+							document.querySelector('#id_password2').outerHTML = "<input class='input100' type='password' name='password2' placeholder='Confirm Password' autocomplete='new-password' id='id_password2'>"
+						</script>						
 					</form>
 
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -98,21 +100,21 @@
 
 	
 <!--===============================================================================================-->	
-	<script src="https://abncc.github.io/todolist_style/Login_v1/vendor/jquery/jquery-3.2.1.min.js"></script>
+	<script src="https://abncc.github.io/todolist_style/Login/vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
-	<script src="https://abncc.github.io/todolist_style/Login_v1/vendor/bootstrap/js/popper.js"></script>
-	<script src="https://abncc.github.io/todolist_style/Login_v1/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="https://abncc.github.io/todolist_style/Login/vendor/bootstrap/js/popper.js"></script>
+	<script src="https://abncc.github.io/todolist_style/Login/vendor/bootstrap/js/bootstrap.min.js"></script>
 <!--===============================================================================================-->
-	<script src="https://abncc.github.io/todolist_style/Login_v1/vendor/select2/select2.min.js"></script>
+	<script src="https://abncc.github.io/todolist_style/Login/vendor/select2/select2.min.js"></script>
 <!--===============================================================================================-->
-	<script src="https://abncc.github.io/todolist_style/Login_v1/vendor/tilt/tilt.jquery.min.js"></script>
+	<script src="https://abncc.github.io/todolist_style/Login/vendor/tilt/tilt.jquery.min.js"></script>
 	<script >
 		$('.js-tilt').tilt({
 			scale: 1.1
 		})
 	</script>
 <!--===============================================================================================-->
-	<script src="https://abncc.github.io/todolist_style/Login_v1/js/main.js"></script>
-
+<script src="https://abncc.github.io/todolist_style/Login/js/main.js"></script>
+<!--===============================================================================================-->
 </body>
 </html>

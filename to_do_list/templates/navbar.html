@@ -15,42 +15,48 @@
         integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/"
         crossorigin="anonymous"></script>
 <!--===============================================================================================-->	
-<!-- Responsive Page -->
+<!-- Styling -->
 <style>
-  @media (max-height: 650px){
-      #no_data_img{
-          margin-top: 100px;
-          width: 300px;
-      }
-  @media (max-height: 332px){
-    #no_data_img{
-      display: none;
-    }
-  }
-}
-  @media (min-width: 1000px){
+  @media (min-width: 992px){
   #save{
     display: none;
   }
+  }
+  .card, .cardsecondary{
+    width: 18rem;
+  }
+  #completed{
+    color: #808080;
+  }
+  sub{
+    font-size: 1rem;
+  }
+  #no_data{
+    width: 30%;
+  }
+  @media (max-width: 800px){
+    #no_data{
+      width: 50%;
+    }
   }
 </style>
 <!--===============================================================================================-->	
 </head>
 <body>
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
   <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'Task' %}">To Do List</a>
+    <a class="navbar-brand" href="{% url 'Task' %}" translate="no">To Do List</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'note' %}">Note</a>
+          <a class="nav-link active fs-5" aria-current="page" href="{% url 'note' %}">Note</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+          <a class="nav-link" href="{% url 'logout' %}"><sub>Logout</sub></a>
         </li>
       </ul>
     </div>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>To Do List</title>
+    <title translate="no">To Do List</title>
 {% extends 'navbar.html' %}>
 {% block content %}
 <!-- Task inputs -->
@@ -21,7 +21,7 @@
 <!-- tasks view -->
 {% if task.completed == False %}
 <!-- Not completed tasks -->
-<div class="card" style="width: 18rem;">
+<div class="card">
     <br>
     <div class="card-body">
         <h4 class="card-title">{{ task.task|striptags|title }}</h4>
@@ -54,7 +54,7 @@
 <!-- Completed tasks -->
 <div class="cardsecondary" style="width: 18rem;">
     <br>
-    <div class="card-body" style="color: grey;">
+    <div class="card-body" id="completed">
         <h4 class="card-title text-decoration-line-through">{{ task.task|striptags|title }}</h4>
         <p class="card-text">{{ task.description|striptags|capfirst }}</p>
         <div class="d-grid gap-1 d-flex">
@@ -76,9 +76,10 @@
 {% endif %}
 {% empty %}
 <!-- No tasks -->
-<img src="https://ihome.agency/en/images/empty-list.png" alt="Looks like you have nothing To Do!" 
-       class="img-fluid position-absolute top-50 start-50 translate-middle" id="no_data_img">
-{% endfor %}
+    <center>
+        <img src="https://abncc.github.io/todolist_style/no_data.svg" alt="Looks like you have nothing to do!" id="no_data">
+    </center>
+    {% endfor %}
 </body>
 </html>
 {% endblock %}

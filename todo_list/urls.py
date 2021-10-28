@@ -17,7 +17,7 @@ from django.conf.urls import handler404
 from django.contrib import admin
 from django.urls import path
 from to_do_list.views import delete_note, note_view, register, task_view, add_task, delete_task, completed_task_view, note_view, add_note, delete_note
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetConfirmView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -33,6 +33,8 @@ urlpatterns = [
     path('?logout?/?', LogoutView.as_view(next_page="login"), name="logout"),
     path('register/', register, name="register"),
     path('admin/', admin.site.urls),
+    path('reset/', PasswordResetView.as_view(template_name='registration/reset.html'), name="reset"),
+    path('confirm/', PasswordResetConfirmView, name="confirm"),
 ]
 
 urlpatterns = urlpatterns + \
