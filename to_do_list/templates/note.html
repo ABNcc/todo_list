@@ -2,39 +2,41 @@
 <html lang="en">
 <head>
     <title>Notes</title>
-{% extends 'navbar.html' %}
-{% block content %}
-<!-- Note input -->
-<form method="POST" action="{% url 'add note' %}"> {% csrf_token %}
-    {{ form.note }}
-    <button type="submit" class="btn btn-primary" id="save">Save</button>
-</form>
+    {% extends 'navbar.html' %}
+    {% block content %}
+    <!-- Note input -->
+    <form method="POST" action="{% url 'add note' %}"> {% csrf_token %}
+        {{ form.note }}
+        <button type="submit" class="btn btn-primary" id="save">Save</button>
+    </form>
 
-{% for n in note %}
-<!-- Empty note alert -->
-{% if n|striptags == "" %}
-<script>
+    {% for n in note %}
+    <!-- Empty note alert -->
+    {% if n|striptags == "" %}
+    <script>
     alert("Remove the '<>' tags to show the note");
-</script>
-{% endif %}
-<!-- Notes view -->
-<div class="card ">
-    <div class="card-body">
-        {{ n.note|striptags|capfirst }}<br>
-        <p style="color: rgb(136, 134, 134);">{{ n.publish_date }}</p>
-        <form method="POST" action="{% url 'delete note' n.id %}"> {% csrf_token %}
-            <div class="d-grid gap-1 justify-content-md-end">
-                <button type="submit" class="btn btn-danger btn-sm" name="note_id" value="{{ n.id }}">Delete</button>
-            </div>
-        </form>
+
+    </script>
+    {% endif %}
+    <!-- Notes view -->
+    <div class="card ">
+        <div class="card-body">
+            {{ n.note|striptags|capfirst }}<br>
+            <p style="color: rgb(136, 134, 134);">{{ n.publish_date }}</p>
+            <form method="POST" action="{% url 'delete note' n.id %}"> {% csrf_token %}
+                <div class="d-grid gap-1 justify-content-md-end">
+                    <button type="submit" class="btn btn-danger btn-sm" name="note_id" value="{{ n.id }}">Delete
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
-{% empty %}
-<!-- No notes -->
-<center>
-    <img src="https://abncc.github.io/todolist_style/no_data.svg" alt="You really don't have notes?" id="no_data">
-</center>
-{% endfor %}
-</body>
+    {% empty %}
+    <!-- No notes -->
+    <center>
+        <img src="https://abncc.github.io/todolist_style/no_data.svg" alt="You really don't have notes?" id="no_data">
+    </center>
+    {% endfor %}
+    </body>
 </html>
 {% endblock %}

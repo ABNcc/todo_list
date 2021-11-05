@@ -1,3 +1,5 @@
+# This is my first web project ever and also my very first django project
+# I started on this project before 2021/9/28
 """
 Django settings for todo_list project.
 

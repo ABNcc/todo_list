@@ -1,6 +1,5 @@
 # Imports
-from typing import Reversible
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 from .models import ToDoList, Note
@@ -17,12 +16,7 @@ from django.contrib.auth.models import User
 def task_view(request):
     tasks = ToDoList.objects.filter(user=request.user).all()
     form = TaskForm()
-    # Inputs
-    task_input = request.POST.get('task', form['task'])
-    description_input = request.POST.get('description', form['description'])
-
-    return render(request, 'index.html',
-                  {'tasks': tasks, 'form': form, 'task_input': task_input, 'description_input': description_input})
+    return render(request, 'index.html', {'tasks': tasks, 'form': form})
 
 
 @csrf_exempt
@@ -30,15 +24,14 @@ def task_view(request):
 @require_POST
 def add_task(request):
     user = request.user
-    form = TaskForm(request.POST)
     # Check if the data for Task entered is valid or not.
+    form = TaskForm(request.POST or None)
     if form.is_valid():
         new_task = ToDoList(user=user,
                             task=request.POST['task'], description=request.POST['description'])
         new_task.save()
-    else:
-        return redirect('/error/not_valid_data/')
-    return redirect('Task')
+        return redirect("Task")
+    return render(request, "index.html", {'form': form, 'tasks': ToDoList.objects.filter(user=request.user).all()})
 
 
 @csrf_exempt

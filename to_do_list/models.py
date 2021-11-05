@@ -6,7 +6,8 @@ from django.contrib.auth.models import User
 class ToDoList(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="task_user", default="User")
-    task = models.CharField(max_length=50)
+    task = models.CharField(max_length=50, error_messages={
+                            'required': "Task field is required"})
     description = models.CharField(max_length=100, blank=True)
     completed = models.BooleanField(default=False)
 
