@@ -15,10 +15,59 @@
         integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/"
         crossorigin="anonymous"></script>
 <!--===============================================================================================-->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {{% if order %}
+        const save = document.querySelector('#save');
+        const task_input = document.querySelector('#task_inpt');
+        const description_input = document.querySelector('#description_inpt');
+        save.disabled = false;
+        task_input.onkeydown = () => {
+
+            if (task_input.value.length > 0 && task_input.value.length <= 50 && description_input.value.length <= 100) {
+                save.disabled = false;
+            }
+            else {
+                save.disabled = true; 
+            }
+
+            
+        }
+
+        task_input.onkeyup = () => {
+            description_input.onkeyup = () => {
+                if (task_input.value.length > 0 && task_input.value.length <= 50 && description_input.value.length <= 100) {
+                    save.disabled = false;
+                }
+
+                else {
+                    save.disabled = true; 
+                }
+            }
+        }{% endif %}
+  {% if tasks or note %}
+  cant.style.display = 'none';
+  document.querySelector('#search-input').addEventListener('input', search);
+  function search(){
+    const SearchInput=document.querySelector('#search-input');
+    const filter=SearchInput.value.toLowerCase();    
+    const tasks=document.querySelectorAll('{% if tasks %}.task{% elif note %}.note{% endif %}');
+    const cant=document.querySelector('#cant');
+    tasks.forEach((task) =>{
+      let text=task.textContent;
+      if(text.toLowerCase().includes(filter.toLowerCase())){
+        task.style.display = 'block';
+        cant.style.display = 'none';
+      }
+      else{
+        task.style.display = 'none';
+        cant.style.display = 'block';
+      }})}
+      {% endif %}})
+</script>
 <!-- Styling -->
 <style>
   @media (min-width: 992px){
-  #save{
+  #save, #save_note{
     display: none;
   }
   }
@@ -39,7 +88,77 @@
       width: 50%;
     }
   }
-
+  #think{
+    width: 18.5%;
+    margin-bottom: 31%;
+    margin-left: 51.5%;
+  }
+  #cant{
+    font-size: 95%;
+    margin-bottom: 29.4%;
+    margin-left: 55%;
+  }
+  #search_bar{
+    display: none;
+  }
+  @media (max-width: 1050px){
+    #think{
+      width: 17%;
+      margin-bottom: 30.2%;
+      margin-left: 52.5%;
+    }
+    #cant{
+      font-size: 75%;
+      margin-bottom: 28.4%;
+      margin-left: 54.6%;
+    }
+  }
+  @media (max-width: 940px){
+    #search{
+      display: none;
+    }
+    #search_bar{
+      display: block;
+    }
+  }
+  @media (max-height: 575px){
+    #search{
+      display: none;
+    }
+    #search_bar{
+      display: block;
+    }
+  }
+  @media(min-width:1440px){
+    @media(max-height:689px){
+      #search{
+        display: none;
+      }
+      #search_bar{
+        display: block;
+      }
+  }
+}
+  @media(min-width:1309px){
+    @media(max-height:640px){
+      #search{
+        display: none;
+      }
+      #search_bar{
+        display: block;
+      }
+  }
+}
+  @media(min-width:14in){
+    @media(max-height:110px){
+      #search{
+        display: none;
+      }
+      #search_bar{
+        display: block;
+      }
+  }
+}
 </style>
 <!--===============================================================================================-->
 </head>

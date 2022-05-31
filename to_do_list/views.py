@@ -9,6 +9,17 @@ from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+from datetime import datetime
+
+
+def task_check(user, task_id):
+    task_check = ToDoList.objects.filter(user=user, pk=task_id).exists()
+    return task_check
+
+
+def note_check(user, note_id):
+    note_check = Note.objects.filter(user=user, pk=note_id).exists()
+    return note_check
 
 
 @csrf_exempt
@@ -31,7 +42,7 @@ def add_task(request):
                             task=request.POST['task'], description=request.POST['description'])
         new_task.save()
         return redirect("Task")
-    return render(request, "index.html", {'form': form, 'tasks': ToDoList.objects.filter(user=request.user).all()})
+    return render(request, "index.html", {'form': form, 'tasks': ToDoList.objects.filter(user=request.user).all(), 'task_len': len(request.POST['task'])})
 
 
 @csrf_exempt
@@ -42,8 +53,6 @@ def delete_task(request, task_id):
     # Check if the Task wanted to be deleted exists or not so it doesn't show an error
     if ToDoList.objects.filter(user=user, pk=task_id).exists():
         ToDoList.objects.get(user=user, pk=task_id).delete()
-    else:
-        return redirect('Task')
     return redirect('Task')
 
 
@@ -52,8 +61,32 @@ def delete_task(request, task_id):
 @require_POST
 def completed_task_view(request, task_id):
     complete = ToDoList.objects.get(user=request.user, pk=task_id)
-    complete.completed = True
-    complete.save()
+    if task_check(request.user, task_id):
+        complete.completed = True
+        complete.save()
+        return redirect('Task')
+    return redirect('Task')
+
+
+@csrf_exempt
+@login_required
+def update_task_view(request, task_id):
+    user = request.user
+    if ToDoList.objects.filter(user=user, pk=task_id).exists():
+        task = ToDoList.objects.get(user=user, pk=task_id)
+        return render(request, 'update.html', {'order': task})
+    return redirect('Task')
+
+
+@csrf_exempt
+@login_required
+@require_POST
+def update_task(request, task_id):
+    user = request.user
+    if ToDoList.objects.filter(user=user, pk=task_id).exists() and 0 < len(request.POST['Task']) <= 50 and len(request.POST['Description']) <= 100:
+        updated_task = ToDoList(
+            user=user, pk=task_id, task=request.POST['Task'], description=request.POST['Description'])
+        updated_task.save()
     return redirect('Task')
 
 
@@ -79,9 +112,8 @@ def add_note(request):
         new_note = Note(user=request.user,
                         note=request.POST['note'], publish_date=datetime.now())
         new_note.save()
-    else:
         return redirect('note')
-    return redirect('note')
+    return render(request, 'note.html', {'note': Note.objects.filter(user=request.user).all(), 'form': form})
 
 
 @csrf_exempt
@@ -93,6 +125,29 @@ def delete_note(request, note_id):
     if Note.objects.filter(user=user, pk=note_id).exists():
         Note.objects.get(user=user, pk=note_id).delete()
     else:
+        return redirect('note')
+    return redirect('note')
+
+
+@csrf_exempt
+@login_required
+def update_note_view(request, note_id):
+    user = request.user
+    if note_check(user, note_id):
+        note = Note.objects.get(user=user, pk=note_id)
+        return render(request, 'update.html', {'order': note})
+    return redirect('note')
+
+
+@csrf_exempt
+@login_required
+@require_POST
+def update_note(request, note_id):
+    user = request.user
+    if note_check(user, note_id) and len(request.POST['Note']) > 0:
+        updated_note = Note(
+            user=user, pk=note_id, note=request.POST['Note'], publish_date=datetime.now())
+        updated_note.save()
         return redirect('note')
     return redirect('note')
 

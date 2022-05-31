@@ -2,7 +2,7 @@
 <html>
 <head>
     <title translate="no">To Do List</title>
-    {% extends 'navbar.html' %}>
+    {% extends 'navbar.html' %}
     {% block content %}
     <!-- Task inputs -->
     <form method="POST" action="{% url 'add' %}">{% csrf_token %}
@@ -13,10 +13,10 @@
         <button type="submit" class="btn btn-primary" id="save">Save</button>
     </form>
     {% for task in tasks %}
-    <!-- tasks view -->
+    <!-- task view -->
     {% if task.completed == False %}
-    <!-- Not completed tasks -->
-    <div class="card">
+    <!-- Not completed task -->
+    <div class="card task">
         <br>
         <div class="card-body">
             <h4 class="card-title">{{ task.task|title }}</h4>
@@ -24,11 +24,11 @@
             <div class="d-grid gap-1 d-flex">
                 <form method="POST" action="{% url 'completed' task.id %}"> {% csrf_token %}
                     <button type="submit" class="btn btn-outline-success btn-sm">
-                        Mark as completed
+                        Done
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              class="bi bi-check2" viewBox="0 0 16 16">
                             <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                        </svg>
+                        </svg>  
                     </button>
                 </form>
                 <form action="{% url 'delete' task.id %}" method="POST"> {% csrf_token %}
@@ -43,15 +43,16 @@
                         Delete
                     </button>
                 </form>
+                <a href="{% url 'update view' task.id %}" class="btn btn-sm btn-outline-secondary">Update</a>
             </div>
         </div>
     </div>
     {% else %}
-    <!-- Completed tasks -->
-    <div class="cardsecondary" style="width: 18rem;">
+    <!-- Completed task -->
+    <div class="cardsecondary task" style="width: 18rem;">
         <br>
         <div class="card-body" id="completed">
-            <h4 class="card-title text-decoration-line-through">{{ task.task|striptags|title }}</h4>
+            <h4 class="card-title text-decoration-line-through">{{ task.task|title }}</h4>
             <p class="card-text">{{ task.description|striptags|capfirst }}</p>
             <div class="d-grid gap-1 d-flex">
                 <form action="{% url 'delete' task.id %}" method="POST"> {% csrf_token %}
@@ -77,6 +78,15 @@
              id="no_data">
     </center>
     {% endfor %}
+    {% if tasks %}
+    <div class="container-fluid start-50" id="search">
+        <img src="https://abncc.github.io/todolist_style/Thinking%20v1.1.png" class="fixed-bottom start-50" alt="Searching for something?" style="width:27%;">
+      <p class="fixed-bottom" id="cant" style="color: #013b84;">I Can't remember that</p>
+    <div id="think" class="d-flex fixed-bottom">
+      <input class="form-control me-2 search-input" type="search" placeholder="Looking for..." aria-label="Search" maxlength="100" style="background-color: #e3f2fd;" id="search-input" required>
+      </div>
+    </div>
+    {% endif %}
     </body>
 </html>
 {% endblock %}
