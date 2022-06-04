@@ -5,184 +5,295 @@
 <link rel="shortcut icon" type="image/x-icon" href="https://abncc.github.io/todolist_style/logo.png">
 <!--===============================================================================================-->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
-      integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+  integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
 <!--===============================================================================================-->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"
-        integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN"
-        crossorigin="anonymous"></script>
+  integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>
 <!--===============================================================================================-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"
-        integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/"
-        crossorigin="anonymous"></script>
+  integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous"></script>
 <!--===============================================================================================-->
 <script>
-    document.addEventListener('DOMContentLoaded', () => {{% if order %}
-        const save = document.querySelector('#save');
-        const task_input = document.querySelector('#task_inpt');
-        const description_input = document.querySelector('#description_inpt');
+  document.addEventListener( 'DOMContentLoaded', () => {
+    {% if order %}
+    const save = document.querySelector( '#save' );
+    const task_input = document.querySelector( '#task_inpt' );
+    const description_input = document.querySelector( '#description_inpt' );
+    save.disabled = false;
+    task_input.onkeydown = () => {
+
+      if ( task_input.value.length > 0 && task_input.value.length <= 50 && description_input.value.length <= 100 ) {
         save.disabled = false;
-        task_input.onkeydown = () => {
+      }
+      else {
+        save.disabled = true;
+      }
 
-            if (task_input.value.length > 0 && task_input.value.length <= 50 && description_input.value.length <= 100) {
-                save.disabled = false;
-            }
-            else {
-                save.disabled = true; 
-            }
 
-            
+    }
+
+    task_input.onkeyup = () => {
+      description_input.onkeyup = () => {
+        if ( task_input.value.length > 0 && task_input.value.length <= 50 && description_input.value.length <= 100 ) {
+          save.disabled = false;
         }
 
-        task_input.onkeyup = () => {
-            description_input.onkeyup = () => {
-                if (task_input.value.length > 0 && task_input.value.length <= 50 && description_input.value.length <= 100) {
-                    save.disabled = false;
-                }
-
-                else {
-                    save.disabled = true; 
-                }
-            }
-        }{% endif %}
-  {% if tasks or note %}
-  cant.style.display = 'none';
-  document.querySelector('#search-input').addEventListener('input', search);
-  function search(){
-    const SearchInput=document.querySelector('#search-input');
-    const filter=SearchInput.value.toLowerCase();    
-    const tasks=document.querySelectorAll('{% if tasks %}.task{% elif note %}.note{% endif %}');
-    const cant=document.querySelector('#cant');
-    tasks.forEach((task) =>{
-      let text=task.textContent;
-      if(text.toLowerCase().includes(filter.toLowerCase())){
-        task.style.display = 'block';
-        cant.style.display = 'none';
+        else {
+          save.disabled = true;
+        }
       }
-      else{
-        task.style.display = 'none';
-        cant.style.display = 'block';
-      }})}
-      {% endif %}})
+    }{% endif %}
+    {% if tasks or note %}
+    cant.style.display = 'none';
+    document.addEventListener( 'keydown', () => {
+      if ( window.getComputedStyle( document.getElementById( 'search-bar' ) ).getPropertyValue( "pointer-events" ) == 'none' ) {
+        document.addEventListener( 'keydown', ( e ) => {
+          if ( e.key.toLowerCase() === "\\" && e.ctrlKey || e.key.toLowerCase() === "/" && e.ctrlKey ) {
+            document.getElementById( 'search-input' ).focus();
+          }
+        } );
+        document.querySelector( '#search-input' ).addEventListener( 'input', search );
+        function search() {
+          document.getElementById( 'search-bar' ).value = document.getElementById( 'search-input' ).value;
+          const SearchInput = document.querySelector( '#search-input' );
+          const filter = SearchInput.value.toLowerCase();
+          const tasks = document.querySelectorAll( '{% if tasks %}.task{% elif note %}.note{% endif %}' );
+          const cant = document.querySelector( '#cant' );
+          var q = tasks.length
+          if ( q === 1 ) { cant.style.display = 'block'; }
+          cant.style.display = 'none';
+          tasks.forEach( ( task ) => {
+            let text = task.textContent;
+            if ( text.toLowerCase().includes( filter.toLowerCase() ) ) {
+              task.classList.remove( 'not-visible' );
+            }
+
+            else if ( !text.toLowerCase().includes( filter.toLowerCase() ) ) {
+              task.classList.add( 'not-visible' );
+              task.style.transition = 'all 500ms';
+              q -= 1;
+            }
+
+            if ( q === 0 ) { cant.style.display = 'block'; }
+          } )
+        }
+      }
+      else if ( window.getComputedStyle( document.getElementById( 'search-input' ) ).getPropertyValue( "pointer-events" ) == 'none' ) {
+        document.querySelector( '#search-bar' ).addEventListener( 'input', search );
+        function search() {
+          document.getElementById( 'search-input' ).value = document.getElementById( 'search-bar' ).value;
+          const SearchBar = document.querySelector( '#search-bar' );
+          const filler = SearchBar.value.toLowerCase();
+          const tasks = document.querySelectorAll( '{% if tasks %}.task{% elif note %}.note{% endif %}' );
+          const cant = document.querySelector( '#cant' );
+          var q = tasks.length
+          if ( q === 1 ) { cant.style.display = 'block'; }
+          cant.style.display = 'none';
+          tasks.forEach( ( task ) => {
+            let text = task.textContent;
+            if ( text.toLowerCase().includes( filler.toLowerCase() ) ) {
+              task.classList.remove( 'not-visible' );
+            }
+
+            else if ( !text.toLowerCase().includes( filler.toLowerCase() ) ) {
+              task.classList.add( 'not-visible' );
+              task.style.transition = 'all 500ms';
+              q -= 1;
+            }
+
+            if ( q === 0 ) { cant.style.display = 'block'; }
+          } )
+        }
+      }
+    } );
+
+    {% endif %}
+
+  } )
 </script>
 <!-- Styling -->
 <style>
-  @media (min-width: 992px){
-  #save, #save_note{
-    display: none;
+  @media (min-width: 992px) {
+
+    #save,
+    #save_note {
+      display: none;
+    }
   }
-  }
-  .card, .cardsecondary{
+
+  .card,
+  .cardsecondary {
     width: 18rem;
   }
-  #completed{
+
+  #completed {
     color: #808080;
   }
-  sub{
+
+  sub {
     font-size: 1rem;
   }
-  #no_data{
+
+  #no_data {
     width: 30%;
   }
-  @media (max-width: 800px){
-    #no_data{
+
+  @media (max-width: 800px) {
+    #no_data {
       width: 50%;
     }
   }
-  #think{
+
+  #think {
     width: 18.5%;
     margin-bottom: 31%;
     margin-left: 51.5%;
   }
-  #cant{
+
+  #cant {
     font-size: 95%;
     margin-bottom: 29.4%;
     margin-left: 55%;
   }
-  #search_bar{
+
+  #search-bar {
     display: none;
+    pointer-events: none;
   }
-  @media (max-width: 1050px){
-    #think{
+
+  @media (max-width: 1050px) {
+    #think {
       width: 17%;
       margin-bottom: 30.2%;
       margin-left: 52.5%;
     }
-    #cant{
+
+    #cant {
       font-size: 75%;
       margin-bottom: 28.4%;
       margin-left: 54.6%;
     }
   }
-  @media (max-width: 940px){
-    #search{
+
+  @media (max-width: 940px) {
+    #search {
       display: none;
+      pointer-events: none;
     }
-    #search_bar{
+
+    #search-bar {
       display: block;
+      pointer-events: auto;
     }
   }
-  @media (max-height: 575px){
-    #search{
+
+  @media (max-height: 575px) {
+    #search {
       display: none;
+      pointer-events: none;
     }
-    #search_bar{
+
+    #search-bar {
       display: block;
+      pointer-events: auto;
     }
   }
-  @media(min-width:1440px){
-    @media(max-height:689px){
-      #search{
+
+  @media(min-width:1440px) {
+    @media(max-height:689px) {
+      #search {
         display: none;
+        pointer-events: none;
       }
-      #search_bar{
+
+      #search-bar {
         display: block;
+        pointer-events: auto;
       }
+    }
   }
-}
-  @media(min-width:1309px){
-    @media(max-height:640px){
-      #search{
+
+  @media(min-width:1309px) {
+    @media(max-height:640px) {
+      #search {
         display: none;
+        pointer-events: none;
       }
-      #search_bar{
+
+      #search-bar {
         display: block;
+        pointer-events: auto;
       }
+    }
   }
-}
-  @media(min-width:14in){
-    @media(max-height:110px){
-      #search{
+
+  @media(min-width:14in) {
+    @media(max-height:110px) {
+      #search {
         display: none;
+        pointer-events: none;
       }
-      #search_bar{
+
+      #search-bar {
         display: block;
+        pointer-events: auto;
       }
+    }
   }
-}
+
+  #spinner-box,
+  #spinner-input {
+    display: none;
+  }
+
+  .not-visible {
+    transform: translateX(-100%);
+    animation: hideAnimation 0s ease-in 500ms;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes hideAnimation {
+    to {
+      position: absolute;
+      visibility: hidden;
+    }
+  }
+
 </style>
 <!--===============================================================================================-->
 </head>
+
 <body>
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'Task' %}" translate="no">To Do List</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active fs-5" aria-current="page" href="{% url 'note' %}">Note</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'logout' %}"><sub>Logout</sub></a>
-                </li>
-            </ul>
+      <a class="navbar-brand" href="{% url 'Task' %}" translate="no">To Do List</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active fs-5" aria-current="page" href="{% url 'note' %}">Note</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}"><sub>Logout</sub></a>
+          </li>
+        </ul>
+        <div class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="search-bar">
         </div>
+      </div>
     </div>
-</nav>
-<!-- End Navbar -->
-{% block content %}
-{% endblock %}
+  </nav>
+  <!-- End Navbar -->
+  {% block content %}
+  {% endblock %}
+  <script>
+    const save = document.getElementById( '{% if tasks %}save{% else %}save_note{% endif %}' );
+    const spinnerBox = document.getElementById( 'spinner-box' );
+    function Submit() { setTimeout( () => { spinnerBox.style.display = 'block'; save.disabled = true; save.style.display = 'none' }, 0.001 ); }
+  </script>
+
+  </html>

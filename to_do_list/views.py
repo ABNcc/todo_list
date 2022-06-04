@@ -12,16 +12,6 @@ from django.contrib.auth.models import User
 from datetime import datetime
 
 
-def task_check(user, task_id):
-    task_check = ToDoList.objects.filter(user=user, pk=task_id).exists()
-    return task_check
-
-
-def note_check(user, note_id):
-    note_check = Note.objects.filter(user=user, pk=note_id).exists()
-    return note_check
-
-
 @csrf_exempt
 @login_required
 def task_view(request):
@@ -60,8 +50,8 @@ def delete_task(request, task_id):
 @login_required
 @require_POST
 def completed_task_view(request, task_id):
-    complete = ToDoList.objects.get(user=request.user, pk=task_id)
-    if task_check(request.user, task_id):
+    if ToDoList.objects.filter(user=request.user, pk=task_id).exists():
+        complete = ToDoList.objects.get(user=request.user, pk=task_id)
         complete.completed = True
         complete.save()
         return redirect('Task')
@@ -133,7 +123,7 @@ def delete_note(request, note_id):
 @login_required
 def update_note_view(request, note_id):
     user = request.user
-    if note_check(user, note_id):
+    if Note.objects.filter(user=user, pk=note_id).exists():
         note = Note.objects.get(user=user, pk=note_id)
         return render(request, 'update.html', {'order': note})
     return redirect('note')
@@ -144,7 +134,7 @@ def update_note_view(request, note_id):
 @require_POST
 def update_note(request, note_id):
     user = request.user
-    if note_check(user, note_id) and len(request.POST['Note']) > 0:
+    if Note.objects.filter(user=user, pk=note_id).exists() and len(request.POST['Note']) > 0:
         updated_note = Note(
             user=user, pk=note_id, note=request.POST['Note'], publish_date=datetime.now())
         updated_note.save()

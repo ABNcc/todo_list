@@ -1,92 +1,107 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title translate="no">To Do List</title>
-    {% extends 'navbar.html' %}
-    {% block content %}
-    <!-- Task inputs -->
-    <form method="POST" action="{% url 'add' %}">{% csrf_token %}
-        {{ form.task }}
-        <div style="color: #dc3545;">{% for error in form.task.errors %}{{ error }}{% endfor %}</div>
-        {{form.description }}
-        <div style="color: #dc3545;">{% for error in form.description.errors %}{{ error }}{% endfor %}</div>
-        <button type="submit" class="btn btn-primary" id="save">Save</button>
-    </form>
-    {% for task in tasks %}
-    <!-- task view -->
-    {% if task.completed == False %}
-    <!-- Not completed task -->
-    <div class="card task">
-        <br>
-        <div class="card-body">
-            <h4 class="card-title">{{ task.task|title }}</h4>
-            <p class="card-text">{{ task.description|capfirst }}</p>
-            <div class="d-grid gap-1 d-flex">
-                <form method="POST" action="{% url 'completed' task.id %}"> {% csrf_token %}
-                    <button type="submit" class="btn btn-outline-success btn-sm">
-                        Done
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                             class="bi bi-check2" viewBox="0 0 16 16">
-                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                        </svg>  
-                    </button>
-                </form>
-                <form action="{% url 'delete' task.id %}" method="POST"> {% csrf_token %}
-                    <button type="submit" class="btn btn-outline-danger btn-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                             class="bi bi-journal-x" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd"
-                                  d="M6.146 6.146a.5.5 0 0 1 .708 0L8 7.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 8l1.147 1.146a.5.5 0 0 1-.708.708L8 8.707 6.854 9.854a.5.5 0 0 1-.708-.708L7.293 8 6.146 6.854a.5.5 0 0 1 0-.708z"></path>
-                            <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"></path>
-                            <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"></path>
-                        </svg>
-                        Delete
-                    </button>
-                </form>
-                <a href="{% url 'update view' task.id %}" class="btn btn-sm btn-outline-secondary">Update</a>
+
+    <head>
+        <title translate="no">To Do List</title>
+        {% extends 'navbar.html' %}
+        {% block content %}
+        <!-- Task inputs -->
+        <form method="POST" action="{% url 'add' %}" onsubmit="Submit()">{% csrf_token %}
+            {{ form.task }}
+            <div style="color: #dc3545;">{% for error in form.task.errors %}{{ error }}{% endfor %}</div>
+            {{form.description }}
+            <div style="color: #dc3545;">{% for error in form.description.errors %}{{ error }}{% endfor %}</div>
+            <button type="submit" class="btn btn-primary" id="save">Save</button>
+        </form>
+        <div id="spinner-box" class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="visually-hidden">Saving</span>
+        </div>
+        {% for task in tasks %}
+        <!-- task view -->
+        {% if task.completed == False %}
+        <!-- Not completed task -->
+        <div class="card task">
+            <div class="card-body">
+                <h4 class="card-title">{{ task.task|title }}</h4>
+                <p class="card-text">{{ task.description|capfirst }}</p>
+                <div class="d-grid gap-1 d-flex">
+                    <form method="POST" action="{% url 'completed' task.id %}"> {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-success btn-sm">
+                            Done
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-check2" viewBox="0 0 16 16">
+                                <path
+                                    d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+                            </svg>
+                        </button>
+                    </form>
+                    <form action="{% url 'delete' task.id %}" method="POST"> {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-journal-x" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M6.146 6.146a.5.5 0 0 1 .708 0L8 7.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 8l1.147 1.146a.5.5 0 0 1-.708.708L8 8.707 6.854 9.854a.5.5 0 0 1-.708-.708L7.293 8 6.146 6.854a.5.5 0 0 1 0-.708z">
+                                </path>
+                                <path
+                                    d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z">
+                                </path>
+                                <path
+                                    d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z">
+                                </path>
+                            </svg>
+                            Delete
+                        </button>
+                    </form>
+                    <a href="{% url 'update view' task.id %}" class="btn btn-sm btn-outline-secondary">Update</a>
+                </div>
             </div>
         </div>
-    </div>
-    {% else %}
-    <!-- Completed task -->
-    <div class="cardsecondary task" style="width: 18rem;">
-        <br>
-        <div class="card-body" id="completed">
-            <h4 class="card-title text-decoration-line-through">{{ task.task|title }}</h4>
-            <p class="card-text">{{ task.description|striptags|capfirst }}</p>
-            <div class="d-grid gap-1 d-flex">
-                <form action="{% url 'delete' task.id %}" method="POST"> {% csrf_token %}
-                    <button type="submit" class="btn btn-outline-danger btn-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                             class="bi bi-journal-x" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd"
-                                  d="M6.146 6.146a.5.5 0 0 1 .708 0L8 7.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 8l1.147 1.146a.5.5 0 0 1-.708.708L8 8.707 6.854 9.854a.5.5 0 0 1-.708-.708L7.293 8 6.146 6.854a.5.5 0 0 1 0-.708z"></path>
-                            <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"></path>
-                            <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"></path>
-                        </svg>
-                        Delete
-                    </button>
-                </form>
+        {% else %}
+        <!-- Completed task -->
+        <div class="cardsecondary task" style="width: 18rem;">
+            <div class="card-body" id="completed">
+                <h4 class="card-title text-decoration-line-through">{{ task.task|title }}</h4>
+                <p class="card-text">{{ task.description|striptags|capfirst }}</p>
+                <div class="d-grid gap-1 d-flex">
+                    <form action="{% url 'delete' task.id %}" method="POST"> {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-journal-x" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M6.146 6.146a.5.5 0 0 1 .708 0L8 7.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 8l1.147 1.146a.5.5 0 0 1-.708.708L8 8.707 6.854 9.854a.5.5 0 0 1-.708-.708L7.293 8 6.146 6.854a.5.5 0 0 1 0-.708z">
+                                </path>
+                                <path
+                                    d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z">
+                                </path>
+                                <path
+                                    d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z">
+                                </path>
+                            </svg>
+                            Delete
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-    {% endif %}
-    {% empty %}
-    <!-- No tasks -->
-    <center>
-        <img src="https://abncc.github.io/todolist_style/no_data.svg" alt="Looks like you have nothing to do!"
-             id="no_data">
-    </center>
-    {% endfor %}
-    {% if tasks %}
-    <div class="container-fluid start-50" id="search">
-        <img src="https://abncc.github.io/todolist_style/Thinking%20v1.1.png" class="fixed-bottom start-50" alt="Searching for something?" style="width:27%;">
-      <p class="fixed-bottom" id="cant" style="color: #013b84;">I Can't remember that</p>
-    <div id="think" class="d-flex fixed-bottom">
-      <input class="form-control me-2 search-input" type="search" placeholder="Looking for..." aria-label="Search" maxlength="100" style="background-color: #e3f2fd;" id="search-input" required>
-      </div>
-    </div>
-    {% endif %}
-    </body>
-</html>
-{% endblock %}
+        {% endif %}
+        {% empty %}
+        <!-- No tasks -->
+        <center>
+            <img src="https://abncc.github.io/todolist_style/no_data.svg" alt="Looks like you have nothing to do!"
+                id="no_data">
+        </center>
+        {% endfor %}
+        {% if tasks %}
+        <div class="container-fluid start-50" id="search">
+            <img src="https://abncc.github.io/todolist_style/Thinking%20v1.1.png" class="fixed-bottom start-50"
+                alt="Searching for something?" style="width:27%;">
+            <p class="fixed-bottom" id="cant" style="color: #013b84;">I Can't remember that</p>
+            <div id="think" class="d-flex fixed-bottom">
+                <input class="form-control form-control-sm me-2 search-input" type="search" placeholder="Looking for..."
+                    aria-label="Search" maxlength="100" style="background-color: #e3f2fd;" id="search-input" required
+                    data-bs-toggle="tooltip" data-bs-placement="top" title="ctrl + \">
+            </div>
+        </div>
+        {% endif %}
+        </body>
+        {% endblock %}

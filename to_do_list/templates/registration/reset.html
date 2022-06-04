@@ -1,15 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reset password</title>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" type="image/x-icon" href="https://abncc.github.io/todolist_style/logo.png">
+    <title>HTML5 Login Form with validation Example</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://abncc.github.io/todolist_style/reset-style.css">
+    <script>document.addEventListener( 'DOMContentLoaded', () => {
+        {% if form.email %} document.getElementById( 'id_email' ).placeholder = 'Email address';
+        {% else %} document.getElementById( 'id_new_password1' ).placeholder = 'New password';
+        document.getElementById( 'id_new_password2' ).placeholder = 'Confirm password';
+        {% endif %}
+      } )</script>
   </head>
+
   <body>
-    <form action="{% url 'confirm' %}" method="POST">
-      {% csrf_token %} {{ form }}
-      <input type="submit" />
-    </form>
+    {% if form.email %}
+    <div id="login-form-wrap">
+      <h2>Password reset</h2>
+      <form id="login-form" method="POST">{% csrf_token %}
+        <sup>Forgotten your password? Enter your email address below, and we’ll email instructions for
+          setting a new one.
+        </sup>
+        <p>
+          {{form.email}}<i class="validation"><span></span><span></span></i>
+        </p>
+        {% if form.errors %}<sup style="color: #ff0033;">This field is required</sup>{% endif %}
+        <p>
+          <input type="submit" id="login" value="Reset my password">
+        </p>
+      </form>
+      <div id="create-account-wrap">
+      </div>
+    </div>
+    {% elif form.new_password1 %}
+    <div id="login-form-wrap">
+      <h2>Enter new password</h2>
+      <form id="login-form" method="POST">{% csrf_token %}
+        <sup>Please enter your new password twice so we can verify you typed it in correctly.</sup>
+        <p>
+          {{form.new_password1}}
+        </p>
+        <div style="color: #ff0033;">{{ form.new_password1.errors }}</div>
+        <p>
+          {{form.new_password2}}
+        </p>
+        <div style="color: #ff0033;">{{form.new_password2.errors}}</div>
+        <p>
+          <input type="submit" id="login" value="Change my password">
+        </p>
+      </form>
+      <div id="create-account-wrap">
+        <p>
+      </div>
+    </div>
+    {% else %}
+    <div id="login-form-wrap">
+      <h2>Password reset sent</h2>
+      <div id="login-form">{% csrf_token %}
+        <sup>We’ve emailed you instructions for setting your password, if an account exists with the email you entered.
+          You should
+          receive them shortly.
+
+          If you don’t receive an email, please make sure you’ve entered the address you registered with, and check your
+          spam
+          folder.</sup>
+      </div>
+    </div>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-80520768-2"
+      type="05bb1099bf8086b6358cc63b-text/javascript"></script>
+    <script type="05bb1099bf8086b6358cc63b-text/javascript">
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-80520768-2');
+</script>
+    <script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js"
+      data-cf-settings="05bb1099bf8086b6358cc63b-|49" defer=""></script>
+    {% endif %}
   </body>
+
 </html>

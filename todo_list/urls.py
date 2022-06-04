@@ -17,9 +17,11 @@ from django.conf.urls import handler404
 from django.contrib import admin
 from django.urls import path
 from to_do_list.views import delete_note, note_view, register, task_view, add_task, delete_task, completed_task_view, note_view, add_note, delete_note, update_task_view, update_task, update_note_view, update_note
-from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetConfirmView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView, PasswordResetCompleteView
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.static import serve
+from django.conf.urls import url
 
 urlpatterns = [
     path('', task_view, name="Task"),
@@ -38,7 +40,16 @@ urlpatterns = [
     path('register/', register, name="register"),
     path('admin/', admin.site.urls),
     path('reset/', PasswordResetView.as_view(template_name='registration/reset.html'), name="reset"),
-    path('confirm/', PasswordResetConfirmView, name="confirm"),
+    path('sent/', PasswordResetDoneView.as_view(template_name='registration/reset.html'),
+         name="password_reset_done"),
+    path('confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(template_name='registration/reset.html'),
+         name="password_reset_confirm"),
+    path('complete/', PasswordResetCompleteView.as_view(template_name='registration/complete.html'),
+         name="password_reset_complete"),
+    url(r'^media/(?P<path>.*)$', serve,
+        {'document_root':       settings.MEDIA_ROOT}),
+    url(r'^static/(?P<path>.*)$', serve,
+        {'document_root': settings.STATIC_ROOT}),
 ]
 
 urlpatterns = urlpatterns + \
