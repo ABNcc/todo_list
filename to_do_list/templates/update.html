@@ -1,45 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Update Task</title>
+    <title>Update {% if order.task %}Task{% else %}Note</title>
     {% extends 'navbar.html' %}
-  {% block content %}
+    {% block content %}
     <form
       action="{% if order.task %}{% url 'update task' order.id %}{% elif order.note %}{% url 'update' order.id %}{% endif %}"
-      method="POST"
-    >{% csrf_token %}
-      <input
-        maxlength="{% if order.task %}50{% else %} {% endif %}"
-        class="form-control form-control-lg"
-        id="{% if order.task %}task_inpt{% else %}note_input{% endif %}"
-        type="text"
+      method="POST">{% csrf_token %}
+      <input maxlength="{% if order.task %}50{% else %} {% endif %}" class="form-control form-control-lg"
+        id="{% if order.task %}task_inpt{% else %}note_input{% endif %}" type="text"
         placeholder="{% if order.task %}Task{% elif order.note %}Note{% endif %}"
-        aria-label="{% if order.task %}Task{% elif order.note %}Note{% endif %} input"
-        autofocus
-        required
+        aria-label="{% if order.task %}Task{% elif order.note %}Note{% endif %} input" autofocus required
         value="{% if order.task %}{{order.task}}{% elif order.note %}{{order.note}}{% endif %}"
-        name="{% if order.task %}Task{% elif order.note %}Note{% endif %}"
-      />
+        name="{% if order.task %}Task{% elif order.note %}Note{% endif %}" />
       <!--===-->{% if order.task %}
-      <input
-        maxlength="100"
-        class="form-control"
-        id="description_inpt"
-        type="text"
-        placeholder="Description"
-        aria-label="description input"
-        value="{{ order.description }}"
-        name="Description"
-      />
+      <input maxlength="100" class="form-control" id="description_inpt" type="text" placeholder="Description"
+        aria-label="description input" value="{{ order.description }}" name="Description" />
       <div style="color: #dc3545" id="description_limit" hidden>
         Description must be 100 characters or less
       </div>
       {% endif %}
       <button type="submit" class="btn btn-primary" id="save">Save</button>
     </form>
-  </body>
-  {% endblock %}
+    </body>
+    {% endblock %}
+
 </html>
