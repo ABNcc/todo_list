@@ -1,6 +1,7 @@
 # This is my first web project ever and also my very first django project
 # I started on this project before 2021/9/28
 # I think it took too much time but that's ok, btw the time while i'm writing this is 2021/11/5 3:22 PM
+# Finally, I deployed it on Heroku on 2022/6/4 2:24 PM
 """
 Django settings for todo_list project.
 
@@ -31,7 +32,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-b6+ap954s45heu8j2zqo5z&))&@7nga%!*6g1x0pv8w0%t2a3b'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'to-do-1ist.herokuapp.com']
 
