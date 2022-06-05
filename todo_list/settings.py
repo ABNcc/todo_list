@@ -96,6 +96,7 @@ DATABASES = {
         'NAME': 'to-do-1ist',
         'USER': 'postgres',
         'PASSWORD': 'AQ6zXMfJNNmu',
+        'HOST': os.environ.get('PGHOSTNAME'),
         'PORT': '',
     }
 }
