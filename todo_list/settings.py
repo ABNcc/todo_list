@@ -96,7 +96,6 @@ DATABASES = {
         'NAME': 'to-do-1ist',
         'USER': 'postgres',
         'PASSWORD': 'AQ6zXMfJNNmu',
-        'HOST': 'to-do-1ist.herokuapp.com',
         'PORT': '',
     }
 }
