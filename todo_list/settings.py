@@ -93,10 +93,10 @@ WSGI_APPLICATION = 'todo_list.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dfiresmv67c9k2',
-        'USER': 'xtfdbavzwllvin',
-        'PASSWORD': '8d0e2ca646c9aec30e7fe16749562fb7aef388e0444ab58e4bfd91fcc18866a4',
-        'HOST': 'ec2-34-231-221-151.compute-1.amazonaws.com',
+        'NAME': 'dcj1iqr9nmur91',
+        'USER': 'npmhoiflgzkmke',
+        'PASSWORD': '94bc9fe47467260f91817719b834dcd695607857e899a3fa7e99f3344ff64f41',
+        'HOST': 'ec2-52-3-2-245.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
