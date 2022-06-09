@@ -42,7 +42,7 @@ urlpatterns = [
     path('reset/', PasswordResetView.as_view(template_name='registration/reset.html'), name="reset"),
     path('sent/', PasswordResetDoneView.as_view(template_name='registration/reset.html'),
          name="password_reset_done"),
-    path('google-verification-page', google_verification_page),
+    path('google07960185c082d602.html', google_verification_page),
     path('confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(template_name='registration/reset.html'),
          name="password_reset_confirm"),
     path('complete/', PasswordResetCompleteView.as_view(template_name='registration/complete.html'),
@@ -57,3 +57,4 @@ urlpatterns = urlpatterns + \
     static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = 'to_do_list.views.error_404'
+handler500 = 'to_do_list.views.error_500'

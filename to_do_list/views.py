@@ -84,6 +84,10 @@ def error_404(request, exception):
     return render(request, 'not_found.html')
 
 
+def error_500(request):
+    return render(request, 'server_crash.html')
+
+
 @login_required
 @csrf_exempt
 def note_view(request):
