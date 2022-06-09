@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import handler404
 from django.contrib import admin
 from django.urls import path
-from to_do_list.views import delete_note, note_view, register, task_view, add_task, delete_task, completed_task_view, note_view, add_note, delete_note, update_task_view, update_task, update_note_view, update_note
+from to_do_list.views import delete_note, note_view, register, task_view, add_task, delete_task, completed_task_view, note_view, add_note, delete_note, update_task_view, update_task, update_note_view, update_note, google_verification_page
 from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView, PasswordResetCompleteView
 from django.conf import settings
 from django.conf.urls.static import static
@@ -42,6 +42,7 @@ urlpatterns = [
     path('reset/', PasswordResetView.as_view(template_name='registration/reset.html'), name="reset"),
     path('sent/', PasswordResetDoneView.as_view(template_name='registration/reset.html'),
          name="password_reset_done"),
+    path('google-verification-page', google_verification_page),
     path('confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(template_name='registration/reset.html'),
          name="password_reset_confirm"),
     path('complete/', PasswordResetCompleteView.as_view(template_name='registration/complete.html'),

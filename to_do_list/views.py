@@ -162,3 +162,7 @@ def register(request):
         else:
             return render(request, "registration/register.html", {'error': RegisterForm(request.POST).errors, 'form': form})
     return render(request, "registration/register.html", {'form': form})
+
+
+def google_verification_page(request):
+    return(request, 'google07960185c082d602.html')
