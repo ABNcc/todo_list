@@ -103,8 +103,19 @@ WSGI_APPLICATION = 'todo_list.wsgi.application'
 # }
 
 DATABASES = {
-    'default': dj_database_url.parse(config('EXTERNAL_DATABASE_URL'))
+    'default': {
+        'ENGINE': config('ENGINE'),
+        'NAME': config('NAME'),
+        'USER': config('USER'),
+        'PASSWORD': config('PASSWORD'),
+        'HOST': config('HOST'),
+        'PORT': config('PORT'),
+    }
 }
+
+# DATABASES = {
+#     'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
