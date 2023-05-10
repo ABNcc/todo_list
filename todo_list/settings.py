@@ -16,10 +16,11 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config
 
 import django
 # import django_heroku
-# import dj_database_url
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,12 +30,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-b6+ap954s45heu8j2zqo5z&))&@7nga%!*6g1x0pv8w0%t2a3b'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = config('DEBUG')
 
-ALLOWED_HOSTS = ['127.0.0.1', 'to-do-1ist.herokuapp.com']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -90,15 +91,19 @@ WSGI_APPLICATION = 'todo_list.wsgi.application'
 #     }
 # }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'dcj1iqr9nmur91',
+#         'USER': 'npmhoiflgzkmke',
+#         'PASSWORD': '94bc9fe47467260f91817719b834dcd695607857e899a3fa7e99f3344ff64f41',
+#         'HOST': 'ec2-52-3-2-245.compute-1.amazonaws.com',
+#         'PORT': '5432',
+#     }
+# }
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dcj1iqr9nmur91',
-        'USER': 'npmhoiflgzkmke',
-        'PASSWORD': '94bc9fe47467260f91817719b834dcd695607857e899a3fa7e99f3344ff64f41',
-        'HOST': 'ec2-52-3-2-245.compute-1.amazonaws.com',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.parse(config('EXTERNAL_DATABASE_URL'))
 }
 
 # Password validation
@@ -149,10 +154,10 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-DEFAULT_FROM_EMAIL = 'to.do.1ist@hotmail.com'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp-mail.outlook.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'to.do.1ist@hotmail.com'
-EMAIL_HOST_PASSWORD = 'aq6ZxmFjnnMU'
-EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
+EMAIL_BACKEND = config('EMAIL_BACKEND')
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS')
